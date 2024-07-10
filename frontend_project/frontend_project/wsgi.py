@@ -1,5 +1,5 @@
 """
-WSGI config for EducationalCenterApi project.
+WSGI config for frontend_project project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'EducationalCenterApi.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'frontend_project.settings')
 
 application = get_wsgi_application()
