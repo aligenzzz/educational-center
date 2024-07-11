@@ -1,18 +1,14 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
 import uuid
+from utilities.validators import phone_validator
     
 
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    phone_number = models.CharField(validators=[
-        RegexValidator(
-            regex=r'^\+375\d{9}$',
-            message='Phone number must be entered in the format: +375XXXXXXXXX.',
-        )
-    ], max_length=13, blank=True, null=True)
+    patronymic = models.CharField(max_length=50, blank=True, null=True)
+    phone_number = models.CharField(validators=[phone_validator], max_length=13, blank=True, null=True)
     role = models.CharField(max_length=50, choices=[
         ('admin', 'Admin'),
         ('teacher', 'Teacher'),
@@ -36,10 +32,7 @@ class CustomUser(AbstractUser):
 class Teacher(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=False, null=False)
-    name = models.CharField(max_length=50, blank=False, null=False)
-    surname = models.CharField(max_length=50, blank=False, null=False)
-    patronymic = models.CharField(max_length=50, blank=True, null=True)
-    image = models.ImageField(upload_to=f'teachers/', null=True, blank=True)
+    image = models.ImageField(upload_to='teachers/', null=True, blank=True)
     education = models.TextField(max_length=500, null=False, blank=False)
     experience = models.TextField(max_length=1000, null=False, blank=False)
     
@@ -48,17 +41,4 @@ class Teacher(models.Model):
         verbose_name_plural = 'Teachers'
 
     def __str__(self):
-        return f'{self.surname} {self.name}'
-    
-    
-class Certificate(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    file = models.FileField(upload_to='certificates/', null=False, blank=False)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=False, blank=False)
-    
-    class Meta:
-        verbose_name = 'Certificate'
-        verbose_name_plural = 'Certificates'
-
-    def __str__(self):
-        return f'Certificate ({self.teacher})'
+        return f"{self.surname} {self.name}"
