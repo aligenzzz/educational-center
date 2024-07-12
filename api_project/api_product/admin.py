@@ -1,7 +1,25 @@
 from django.contrib import admin
-from api_product.models import (Certificate, Article, CourseCategory, Course, Discount,
-                                Review, FaqCategory, Faq, Application)
+from api_product.models import (TeacherInfo, Certificate, Article, CourseCategory, Course,
+                                Discount, Review, FaqCategory, Faq, Application)
+from api_product.forms import TeacherInfoForm, CourseForm
 
+
+@admin.register(TeacherInfo)
+class TeacherInfoAdmin(admin.ModelAdmin):
+    form = TeacherInfoForm
+    
+    list_display = ('user', 'full_name', 'education', 'experience', 
+                    'course_count', 'certificate_count')
+    search_fields = ('^username', 'full_name__icontains')
+    
+    def certificate_count(self, obj):
+        return obj.certificates.count()
+    certificate_count.short_description = 'Certificate count'
+    
+    def course_count(self, obj):
+        return obj.courses.count()
+    course_count.short_description = 'Course count'
+    
 
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
@@ -18,10 +36,12 @@ class ArticleAdmin(admin.ModelAdmin):
 @admin.register(CourseCategory)
 class CourseCategoryAdmin(admin.ModelAdmin):
     pass
-
+        
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
+    form = CourseForm
+    
     list_display = ('name', 'study_hours', 'price_for_one', 'price_for_many',
                     'course_category')
     list_filter = ('study_hours', 'price_for_one', 'price_for_many',

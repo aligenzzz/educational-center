@@ -1,0 +1,12 @@
+-- Students
+student1    Z7H-Tva-crn-TfF
+student2    SJR-9Cg-FM4-7nv
+
+
+-- Teachers
+teacher1    q4G-h6W-Ah3-C3r
+teacher2    nca-6k7-Uxz-Gaf
+
+
+-- Admins
+admin   HnP-Q77-HxT-Gqe
