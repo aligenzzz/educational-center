@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from api_authentication.models import Teacher, CustomUser
 from utilities.validators import phone_validator
+from datetime import date
 import uuid
 
 
@@ -28,6 +29,7 @@ class Article(models.Model):
     content = models.TextField(null=False, blank=False)
     image = models.ImageField(upload_to='articles/', null=True, blank=True)
     creation_date = models.DateField(blank=False, null=False, default=datetime.now)
+    source = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Article'
@@ -92,7 +94,7 @@ class Review(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.CharField(max_length=50, blank=False, null=False)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=False, null=False)
-    content = models.TextField(max_length=1000, blank=False, null=False)
+    content = models.TextField(blank=False, null=False)
     creation_date = models.DateField(blank=False, null=False, default=datetime.now)
 
     class Meta:
@@ -101,7 +103,7 @@ class Review(models.Model):
         ordering = ('-creation_date', )
 
     def __str__(self):
-        return f"Review by {self.author} on {self.course_category}"
+        return f"Review by {self.author} on {self.course}"
 
 
 class FaqCategory(models.Model):
@@ -120,7 +122,7 @@ class FaqCategory(models.Model):
 class Faq(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     question = models.CharField(max_length=200, blank=False, null=False)
-    answer = models.TextField(max_length=1000, blank=False, null=False)
+    answer = models.TextField(blank=False, null=False)
     faq_category = models.ForeignKey(FaqCategory, on_delete=models.CASCADE, blank=False, null=False)
 
     class Meta:
@@ -137,7 +139,7 @@ class Application(models.Model):
     surname = models.CharField(max_length=100, blank=False, null=False)
     phone_number = models.CharField(validators=[phone_validator], max_length=13, blank=False, null=False)
     email = models.EmailField(blank=True, null=True)
-    start_date = models.DateField(blank=False, null=False, default=datetime.now)
+    start_date = models.DateField(blank=False, null=False, default=datetime.now())
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=False, null=False)
 
     class Meta:
@@ -146,10 +148,10 @@ class Application(models.Model):
         ordering = ('start_date', )
 
     def __str__(self):
-        return f"{self.name} {self.surname} — {self.course.title}"
+        return f"{self.name} {self.surname} — {self.course.name}"
 
     def clean(self):
         super().clean()
-        if self.start_date > timezone.now().date():
+        if isinstance(self.start_date, date) and self.start_date < date.today():
             raise ValidationError('Start date cannot be in the future.')
         
