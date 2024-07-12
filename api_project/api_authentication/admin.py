@@ -22,5 +22,5 @@ class TeacherAdmin(admin.ModelAdmin):
     certificate_count.short_description = 'Certificate count'
     
     def course_count(self, obj):
-        return obj.course.count()
+        return obj.courses.count()
     course_count.short_description = 'Course count'

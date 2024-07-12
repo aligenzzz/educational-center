@@ -108,7 +108,7 @@ class Review(models.Model):
 
 class FaqCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
 
     class Meta:
         verbose_name = 'FaqCategory'
