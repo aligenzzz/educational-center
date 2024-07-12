@@ -28,7 +28,7 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
-        ordering = ('-date_joined', )
+        ordering = ('-date_joined',)
 
     def __str__(self):
         return self.username

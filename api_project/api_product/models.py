@@ -34,7 +34,7 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
-        ordering = ('-creation_date', )
+        ordering = ('-creation_date',)
 
     def __str__(self):
         return self.title
@@ -47,7 +47,7 @@ class CourseCategory(models.Model):
     class Meta:
         verbose_name = 'CourseCategory'
         verbose_name_plural = 'CourseCategories'
-        ordering = ('-name', )
+        ordering = ('-name',)
 
     def __str__(self):
         return self.name
@@ -70,7 +70,7 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'Course'
         verbose_name_plural = 'Courses'
-        ordering = ('-name', )
+        ordering = ('-name',)
 
     def __str__(self):
         return self.name
@@ -84,7 +84,7 @@ class Discount(models.Model):
     class Meta:
         verbose_name = 'Discount'
         verbose_name_plural = 'Discounts'
-        ordering = ('-percent', )
+        ordering = ('-percent',)
 
     def __str__(self):
         return f"{self.percent} %"
@@ -100,7 +100,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
-        ordering = ('-creation_date', )
+        ordering = ('-creation_date',)
 
     def __str__(self):
         return f"Review by {self.author} on {self.course}"
@@ -113,7 +113,7 @@ class FaqCategory(models.Model):
     class Meta:
         verbose_name = 'FaqCategory'
         verbose_name_plural = 'FaqCategories'
-        ordering = ('-name', )
+        ordering = ('-name',)
 
     def __str__(self):
         return self.name
@@ -145,7 +145,7 @@ class Application(models.Model):
     class Meta:
         verbose_name = 'Application'
         verbose_name_plural = 'Applications'
-        ordering = ('start_date', )
+        ordering = ('start_date',)
 
     def __str__(self):
         return f"{self.name} {self.surname} — {self.course.name}"

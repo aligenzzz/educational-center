@@ -5,14 +5,14 @@ from api_product.models import (Certificate, Article, CourseCategory, Course, Di
 
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
-    search_fields = ('techer__icontains', )
+    search_fields = ('techer__icontains',)
     
     
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'creation_date')
-    list_filter = ('creation_date', )
-    search_fields = ('^title', )
+    list_filter = ('creation_date',)
+    search_fields = ('^title',)
     
 
 @admin.register(CourseCategory)
@@ -26,7 +26,7 @@ class CourseAdmin(admin.ModelAdmin):
                     'course_category')
     list_filter = ('study_hours', 'price_for_one', 'price_for_many',
                     'course_category')
-    search_fields = ('^name', )
+    search_fields = ('^name',)
     
     def teacher_count(self, obj):
         return obj.teachers.count()
@@ -44,8 +44,8 @@ class DiscountAdmin(admin.ModelAdmin):
     
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('author', 'content', 'course', 'creation_date')
-    list_filter = ('creation_date', )
+    list_display = ('author', 'course', 'creation_date')
+    list_filter = ('creation_date',)
     search_fields = ('^author', '^course')
 
 
@@ -56,9 +56,9 @@ class FaqCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Faq)
 class FaqAdmin(admin.ModelAdmin):
-    list_display = ('question', 'answer', 'faq_category')
-    list_filter = ('faq_category', )
-    search_fields = ('^question', )
+    list_display = ('question', 'faq_category')
+    list_filter = ('faq_category',)
+    search_fields = ('^question',)
 
 
 @admin.register(Application)
