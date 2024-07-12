@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from api_authentication.models import Teacher, CustomUser
 from utilities.validators import phone_validator
+from django.utils import timezone
 from datetime import date
 import uuid
 
@@ -139,7 +140,7 @@ class Application(models.Model):
     surname = models.CharField(max_length=100, blank=False, null=False)
     phone_number = models.CharField(validators=[phone_validator], max_length=13, blank=False, null=False)
     email = models.EmailField(blank=True, null=True)
-    start_date = models.DateField(blank=False, null=False, default=datetime.now())
+    start_date = models.DateField(blank=False, null=False, default=timezone.now().date)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=False, null=False)
 
     class Meta:
@@ -152,6 +153,6 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
-        if isinstance(self.start_date, date) and self.start_date < date.today():
-            raise ValidationError('Start date cannot be in the future.')
+        if self.start_date < timezone.now().date():
+            raise ValidationError('Start date cannot be in the past.')
         
