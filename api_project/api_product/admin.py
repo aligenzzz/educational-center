@@ -1,7 +1,7 @@
 from django.contrib import admin
-from api_product.models import (TeacherInfo, Certificate, Article, CourseCategory, Course,
-                                Discount, Review, FaqCategory, Faq, Application)
-from api_product.forms import TeacherInfoForm, CourseForm
+from .models import (TeacherInfo, Certificate, Article, CourseCategory, Course,
+                     Discount, Review, FaqCategory, Faq, Application)
+from .forms import TeacherInfoForm, CourseForm
 
 
 @admin.register(TeacherInfo)

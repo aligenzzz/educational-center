@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from api_product.models import (TeacherInfo, Certificate, Article, CourseCategory, Course,
-                                Discount, Review, FaqCategory, Faq, Application)
+from .models import (TeacherInfo, Certificate, Article, CourseCategory, Course,
+                     Discount, Review, FaqCategory, Faq, Application)
 
 
 class TeacherInfoSerializer(serializers.ModelSerializer):
