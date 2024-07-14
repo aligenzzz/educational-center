@@ -27,17 +27,22 @@ class TeacherInfo(models.Model):
 
     def __str__(self):
         return self.full_name
-    
+
     def clean(self):
         super().clean()
         if self.user.role != 'teacher':
             raise ValidationError(f"User {self.user.username} does not have the 'teacher' role")
 
+    def save(self, *args, **kwargs):
+        if self.user.role != 'teacher':
+            raise ValidationError(f"User {self.user.username} does not have the 'teacher' role")
+        super().save(*args, **kwargs)
+
 
 class Certificate(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     file = models.FileField(upload_to='certificates/', null=False, blank=False)
-    teacher = models.ForeignKey(TeacherInfo, on_delete=models.CASCADE, null=False, blank=False,
+    teacher = models.ForeignKey(TeacherInfo, on_delete=models.CASCADE, null=True, blank=False,
                                 related_name='certificates')
 
     class Meta:
@@ -109,7 +114,7 @@ class Course(models.Model):
     
 class Discount(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    percent = models.PositiveIntegerField(blank=False, null=True, default=0, validators=[MaxValueValidator(100)])
+    percent = models.PositiveIntegerField(blank=False, null=True, default=0, validators=[MaxValueValidator(99)])
     description = models.TextField(max_length=500, blank=False, null=False)
 
     class Meta:

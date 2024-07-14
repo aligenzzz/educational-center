@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (TeacherInfo, Certificate, Article, CourseCategory, Course,
                      Discount, Review, FaqCategory, Faq, Application)
-
+from api_authentication.models import User
 
 class TeacherInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,20 +16,19 @@ class CertificateSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    creation_date = serializers.DateField(format="%Y-%m-%d", input_formats=['%Y-%m-%d'])
+
     class Meta:
         model = Article
         fields = '__all__'
+        extra_kwargs = {
+            'image': {'required': False}
+        }
 
 
 class CourseCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseCategory
-        fields = '__all__'
-
-
-class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
         fields = '__all__'
 
 
@@ -60,5 +59,17 @@ class FaqSerializer(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
+        fields = '__all__'
+
+
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    teachers = serializers.PrimaryKeyRelatedField(queryset=TeacherInfo.objects.all(), many=True)
+    students = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    course_category = serializers.PrimaryKeyRelatedField(queryset=CourseCategory.objects.all())
+
+    class Meta:
+        model = Course
         fields = '__all__'
         
