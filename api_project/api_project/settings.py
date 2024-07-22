@@ -128,5 +128,17 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,  
     'DEFAULT_MODEL_RENDERING': 'example', 
     'DISPLAY_OPERATION_ID': False,
-    'SECURITY_DEFINITIONS': {},
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT authorization header using the Bearer scheme.',
+        }
+    },
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'BLACKLIST_AFTER_ROTATION': True,
 }
