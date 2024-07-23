@@ -20,13 +20,12 @@ from api_authentication.permissions import JWTSessionAuthentication
     
 class UserViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny]
-    
     queryset = User.objects.all()
 
     @swagger_auto_schema(
         tags=['Users'],
         responses={
-            200: UserSerializer(many=True)
+            200: UserSerializer(many=True),
         },
     )
     def list(self, request, *args, **kwargs):
@@ -37,7 +36,7 @@ class UserViewSet(viewsets.GenericViewSet):
     @swagger_auto_schema(
         tags=['Users'],
         responses={
-            200: UserSerializer()
+            200: UserSerializer,
         },
     )
     def retrieve(self, request, pk=None):
@@ -68,7 +67,7 @@ class UserProfileView(views.APIView):
         responses={
             200: openapi.Response(
                 description='Profile was updated',
-                schema=UserProfileSerializer
+                schema=UserProfileSerializer,
             ),
             400: 'Bad request',
             401: 'Unauthorized',
@@ -88,7 +87,7 @@ class UserProfileView(views.APIView):
         responses={
             200: openapi.Response(
                 description='Profile was updated',
-                schema=UserProfileSerializer
+                schema=UserProfileSerializer,
             ),
             400: 'Bad request',
             401: 'Unauthorized',
@@ -124,7 +123,7 @@ class ChangePasswordView(views.APIView):
             )
         ],
     )
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             try:
@@ -163,7 +162,7 @@ class LoginView(views.APIView):
             )
         ],
     )
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             try:
@@ -195,7 +194,7 @@ class LogoutView(views.APIView):
             )
         ],
     )
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = LogoutSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             try:
@@ -208,6 +207,7 @@ class LogoutView(views.APIView):
     
 
 class TokenObtainPairView(TokenObtainPairView): 
+    authentication_classes=[]
     permission_classes = [AllowAny]
       
     @swagger_auto_schema(
@@ -230,6 +230,7 @@ class TokenObtainPairView(TokenObtainPairView):
 
 
 class TokenRefreshView(TokenRefreshView):
+    authentication_classes=[]
     permission_classes = [AllowAny]
     
     @swagger_auto_schema(
@@ -251,6 +252,7 @@ class TokenRefreshView(TokenRefreshView):
 
 
 class TokenVerifyView(TokenVerifyView):
+    authentication_classes=[]
     permission_classes = [AllowAny]
     
     @swagger_auto_schema(

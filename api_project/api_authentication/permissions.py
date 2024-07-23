@@ -1,6 +1,8 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import BasePermission
+from api_product.models import Certificate
 
 
 class JWTSessionAuthentication:
@@ -23,3 +25,15 @@ class JWTSessionAuthentication:
     def authenticate_header(self, request):
         jwt_authenticator = JWTAuthentication()
         return jwt_authenticator.authenticate_header(request)
+
+
+class IsAdminOrOwnerTeacher(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        if isinstance(obj, Certificate):
+            return request.user.is_staff or obj.teacher.user == request.user
+        else:
+            return request.user.is_staff or obj.user == request.user
+    
