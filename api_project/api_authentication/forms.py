@@ -1,4 +1,4 @@
-from api_authentication.models import User
+from .models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 

@@ -1,6 +1,6 @@
 from django import forms
 from api_authentication.models import User
-from api_product.models import TeacherInfo, Course
+from .models import TeacherInfo, Course
 
 
 class TeacherInfoForm(forms.ModelForm):
