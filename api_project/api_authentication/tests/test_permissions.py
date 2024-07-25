@@ -1,6 +1,5 @@
 from unittest.mock import patch, MagicMock
 from django.test import TestCase, RequestFactory
-from rest_framework.test import APIRequestFactory
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import AuthenticationFailed
 from ..models import User
@@ -11,7 +10,6 @@ from ..permissions import JWTSessionAuthentication, IsAdminOrOwnerTeacher
 class TestPermissions(TestCase):
 
     def setUp(self):
-        # Создание пользователей и данных
         self.student = User.objects.create_user(username='student', password='password', role='student')
         self.admin = User.objects.create_user(username='admin', password='password', role='admin', is_staff=True)
         self.teacher_user = User.objects.create_user(username='teacher', password='password', role='teacher')
@@ -36,7 +34,6 @@ class TestPermissions(TestCase):
     @patch('api_authentication.permissions.JWTAuthentication')
     @patch('api_authentication.permissions.SessionAuthentication')
     def test_jwt_authentication(self, MockSessionAuth, MockJWTAuth):
-        # Настройка моков
         mock_jwt_auth = MockJWTAuth.return_value
         mock_jwt_auth.authenticate.return_value = (self.student, None)
 
@@ -50,7 +47,6 @@ class TestPermissions(TestCase):
         user_auth_tuple = self.jwt_authenticator.authenticate(request)
         self.assertEqual(user_auth_tuple[0], self.student)
 
-        # Изменение поведения мока для проверки неудачной аутентификации
         mock_jwt_auth.authenticate.return_value = None
         with self.assertRaises(AuthenticationFailed):
             self.jwt_authenticator.authenticate(request)
@@ -59,29 +55,29 @@ class TestPermissions(TestCase):
         factory = RequestFactory()
         request = factory.get('/')
         request.user = user
-        request.session = MagicMock()  # Мокируем сессию
+        request.session = MagicMock()
         return request
 
     @patch('api_authentication.permissions.JWTAuthentication')
     @patch('api_authentication.permissions.SessionAuthentication')
     def test_session_authentication(self, MockSessionAuth, MockJWTAuth):
-        # Настройка моков
+
         mock_jwt_auth = MockJWTAuth.return_value
         mock_jwt_auth.authenticate.return_value = (self.student, None)
 
         mock_session_auth = MockSessionAuth.return_value
         mock_session_auth.authenticate.return_value = (self.student, None)
 
-        # Создаем запрос с сессией
+
         request = MagicMock()
-        request.session = MagicMock()  # Мокируем сессию
+        request.session = MagicMock()
         request.user = self.student
 
-        # Проверка аутентификации сессии
+
         user_auth_tuple = JWTSessionAuthentication().authenticate(request)
         self.assertEqual(user_auth_tuple[0], self.student)
 
-        # Изменение поведения мока для проверки неудачной аутентификации
+
         mock_session_auth.authenticate.return_value = None
         with self.assertRaises(AuthenticationFailed):
             JWTSessionAuthentication().authenticate(request)
