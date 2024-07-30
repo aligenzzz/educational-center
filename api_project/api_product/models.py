@@ -13,11 +13,11 @@ class TeacherInfo(models.Model):
     photo = models.ImageField(upload_to='teachers/', null=True, blank=True)
     education = models.TextField(null=False, blank=False)
     experience = models.TextField(null=False, blank=False)
-    
+
     class Meta:
         verbose_name = 'TeacherInfo'
         verbose_name_plural = 'TeacherInfo'
-        
+
     @property
     def full_name(self):
         if self.user.patronymic:
@@ -30,13 +30,6 @@ class TeacherInfo(models.Model):
 
     def clean(self):
         super().clean()
-        if self.user.role != 'teacher':
-            raise ValidationError(f'User {self.user.username} does not have the \'teacher\' role')
-
-    def save(self, *args, **kwargs):
-        if self.user.role != 'teacher':
-            raise ValidationError(f'User {self.user.username} does not have the \'teacher\' role')
-        super().save(*args, **kwargs)
 
 
 class Certificate(models.Model):
@@ -104,12 +97,7 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-    
-    def clean(self):
-        super().clean()
-        for student in self.students.all():
-            if student.role != 'student':
-                raise ValidationError(f'User {student.username} does not have the \'student\' role')
+
     
     
 class Discount(models.Model):
@@ -195,4 +183,6 @@ class Application(models.Model):
         super().clean()
         if self.start_date < timezone.now().date():
             raise ValidationError('Start date cannot be in the past.')
+
+
         

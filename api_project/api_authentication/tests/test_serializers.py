@@ -14,8 +14,6 @@ from ..models import User
 class TestUserSerializers(TestCase):
 
     def setUp(self):
-        # self.factory = APIRequestFactory()
-        # Create a user for testing purposes
         self.user = User.objects.create_user(username='testuser', password='testpass', role='student')
 
     def test_user_serializer(self):
