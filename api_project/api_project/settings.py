@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'api_authentication',
     'api_product',
     'drf_yasg',
+    'pytest_django',
 ]
 
 MIDDLEWARE = [
